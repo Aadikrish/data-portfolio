@@ -19,6 +19,19 @@
 </head>
 
 <body>
+    <!-- ===== CINEMATIC LOADING SCREEN ===== -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader-content">
+            <div class="loader-logo">AK<span>.</span></div>
+            <div class="loader-terminal">
+                <div class="terminal-line" id="tl-1"></div>
+                <div class="terminal-line" id="tl-2"></div>
+                <div class="terminal-line" id="tl-3"></div>
+                <div class="terminal-cursor">█</div>
+            </div>
+            <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+        </div>
+    </div>
     <!-- Scroll Progress Indicator -->
     <div id="scroll-progress" class="scroll-progress-bar"></div>
 
@@ -76,7 +89,7 @@
                     and business intelligence to turn complex datasets into actionable insights.</p>
                 <div class="hero-cta stagger-4">
                     <a href="#projects" class="btn-primary btn-ripple magnetic-btn">View Projects</a>
-                    <a href="#resume" class="btn-secondary btn-ripple magnetic-btn">Download Resume</a>
+                    <a href="Aadikrishna_CV.pdf" download class="btn-secondary btn-ripple magnetic-btn">Download Resume</a>
                 </div>
             </div>
 
@@ -163,24 +176,24 @@
                     </div>
 
                     <div class="neon-stats-grid">
-                        <div class="neon-stat-card" data-tilt data-tilt-max="10">
+                        <div class="neon-stat-card fade-in-up" data-tilt data-tilt-max="10">
                             <i class="fa-solid fa-code branch-icon"></i>
-                            <h3 class="neon-number">6+</h3>
+                            <h3 class="neon-number"><span class="counter" data-target="6" data-suffix="+">0</span></h3>
                             <p class="neon-label">PROGRAMMING LANGUAGES</p>
                         </div>
-                        <div class="neon-stat-card" data-tilt data-tilt-max="10">
+                        <div class="neon-stat-card fade-in-up" data-tilt data-tilt-max="10">
                             <i class="fa-solid fa-network-wired branch-icon"></i>
-                            <h3 class="neon-number">3+</h3>
+                            <h3 class="neon-number"><span class="counter" data-target="3" data-suffix="+">0</span></h3>
                             <p class="neon-label">KEY PROJECTS</p>
                         </div>
-                        <div class="neon-stat-card" data-tilt data-tilt-max="10">
+                        <div class="neon-stat-card fade-in-up" data-tilt data-tilt-max="10">
                             <i class="fa-solid fa-database branch-icon"></i>
-                            <h3 class="neon-number">50+</h3>
+                            <h3 class="neon-number"><span class="counter" data-target="50" data-suffix="+">0</span></h3>
                             <p class="neon-label">DATASETS ANALYSED</p>
                         </div>
-                        <div class="neon-stat-card" data-tilt data-tilt-max="10">
+                        <div class="neon-stat-card fade-in-up" data-tilt data-tilt-max="10">
                             <i class="fa-solid fa-layer-group branch-icon"></i>
-                            <h3 class="neon-number">10+</h3>
+                            <h3 class="neon-number"><span class="counter" data-target="10" data-suffix="+">0</span></h3>
                             <p class="neon-label">TOOLS MASTERED</p>
                         </div>
                     </div>
@@ -622,7 +635,7 @@
                     my full background?</h2>
                 <p style="margin-bottom: 2rem; max-width: 500px;">Download my complete resume to see detailed work
                     history, education, and specific technical proficiencies.</p>
-                <a href="#" class="btn-primary btn-ripple magnetic-btn">Download PDF Resume</a>
+                <a href="Aadikrishna_CV.pdf" download class="btn-primary btn-ripple magnetic-btn">Download PDF Resume</a>
             </div>
         </section>
 
