@@ -349,10 +349,9 @@ function initHamburgerMenu() {
     });
 }
 
-// --- 4. Scroll Reveal (Fade In Up + Stagger) ---
 function initScrollReveal() {
     const observerOptions = {
-        threshold: 0.1,
+        threshold: 0.15,
         rootMargin: '0px 0px -50px 0px'
     };
 
@@ -363,6 +362,15 @@ function initScrollReveal() {
 
                 // If it's a stat card, trigger the counter
                 if (entry.target.classList.contains('stat-card')) {
+                    const counter = entry.target.querySelector('.counter');
+                    if (counter && !counter.classList.contains('counted')) {
+                        animateCounter(counter);
+                        counter.classList.add('counted');
+                    }
+                }
+
+                // Neon stat cards with data-target counters
+                if (entry.target.classList.contains('neon-stat-card')) {
                     const counter = entry.target.querySelector('.counter');
                     if (counter && !counter.classList.contains('counted')) {
                         animateCounter(counter);
@@ -381,24 +389,41 @@ function initScrollReveal() {
 
     // Observe timeline items for dot pulse
     document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
+
+    // Observe neon stat cards for counter animation
+    document.querySelectorAll('.neon-stat-card').forEach(el => observer.observe(el));
 }
 
 function animateCounter(el) {
     const target = parseInt(el.getAttribute('data-target'));
-    const duration = 2000;
-    const step = target / (duration / 16);
+    const suffix = el.getAttribute('data-suffix') || '';
+    const duration = 1800;
+    const steps = 60;
+    const increment = target / steps;
     let current = 0;
+    let step = 0;
+
+    // Add counting glow class to parent card
+    const card = el.closest('.neon-stat-card');
+    if (card) card.classList.add('counting');
 
     const updateCounter = () => {
-        current += step;
-        if (current < target) {
-            el.innerText = Math.ceil(current);
+        step++;
+        // Ease-out: faster at start, slower at end
+        const progress = step / steps;
+        const eased = 1 - Math.pow(1 - progress, 3);
+        current = Math.round(eased * target);
+
+        el.textContent = current + suffix;
+
+        if (step < steps) {
             requestAnimationFrame(updateCounter);
         } else {
-            el.innerText = target;
+            el.textContent = target + suffix;
+            if (card) card.classList.remove('counting');
         }
     };
-    updateCounter();
+    requestAnimationFrame(updateCounter);
 }
 
 
@@ -653,7 +678,9 @@ function updateCanvasTheme(theme) {
 // INITIALISE EVERYTHING
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+    initLoader();
     initNextGenInteractions();
+    initCursorSparks();
     initCanvas();
     initScrollProgress();
     initActiveNav();
@@ -665,6 +692,75 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     initThemeToggle();
 });
+
+// ============================================================
+// CINEMATIC LOADER
+// ============================================================
+function initLoader() {
+    const loader = document.getElementById('loader');
+    const bar   = document.getElementById('loader-bar');
+    if (!loader || !bar) return;
+
+    const lines = [
+        '> Initialising data environment...',
+        '> Loading analytics modules...',
+        '> Portfolio ready.'
+    ];
+
+    let progress = 0;
+    const totalDuration = 2200; // ms
+    const barInterval = setInterval(() => {
+        progress = Math.min(progress + Math.random() * 12 + 4, 100);
+        bar.style.width = progress + '%';
+        if (progress >= 100) clearInterval(barInterval);
+    }, 100);
+
+    // Type out terminal lines sequentially
+    lines.forEach((text, i) => {
+        setTimeout(() => {
+            const el = document.getElementById(`tl-${i + 1}`);
+            if (!el) return;
+            el.classList.add('show');
+            el.textContent = text;
+        }, i * 600 + 300);
+    });
+
+    // Hide loader after animation
+    setTimeout(() => {
+        loader.classList.add('hidden');
+        setTimeout(() => loader.remove(), 700);
+    }, totalDuration);
+}
+
+// ============================================================
+// CURSOR SPARK TRAIL
+// ============================================================
+function initCursorSparks() {
+    const colors = ['#3B82F6', '#06B6D4', '#8B5CF6', '#34D399', '#F59E0B'];
+    let lastTime = 0;
+    const throttleMs = 35; // emit spark every ~35ms
+
+    window.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - lastTime < throttleMs) return;
+        lastTime = now;
+
+        const spark = document.createElement('div');
+        spark.className = 'cursor-spark';
+        const size = Math.random() * 6 + 4;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        spark.style.cssText = `
+            left: ${e.clientX}px;
+            top: ${e.clientY}px;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            box-shadow: 0 0 ${size * 2}px ${color};
+        `;
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 500);
+    });
+}
 
 // ============================================================
 // ============================================================
